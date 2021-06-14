@@ -13,8 +13,11 @@ const VALUES = {
   CAPTION_STATUS_INACTIVE: "Inactive",
   CAPTION_BIO: "Bio",
   CAPTION_PROFILEPICTURE: "Profile Picture",
-  CAPTION_BUTTON_CREATE: "Create & Edit",
+  CAPTION_BUTTON_CREATE: "Create Customer",
   CAPTION_BUTTON_EDIT: "Edit",
+  CAPTION_BUTTON_SHOW_CUSTOMERLIST: "Display Customer List",
+  CAPTION_BUTTON_SHOW_CUSTOMERFORM: "Display Customer Form",
+  CAPTION_BUTTON_EDIT: "Edit Customer",
 };
 
 export default VALUES;

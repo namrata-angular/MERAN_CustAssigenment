@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Toast } from "react-bootstrap";
 import ConstantsCustomerForm from "../Constants/CustomerForm";
 import Datetime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
@@ -12,33 +12,35 @@ import { useLocation } from "react-router-dom";
 //import DatePicker from "react-datepicker";
 //import "react-datepicker/dist/react-datepicker.css";
 const CustomerForm = () => {
-  var idUser = window.sessionStorage.getItem("id");
-  console.log("idUser"+idUser);
+  const [startDate, setStartDate] = useState(new Date());
+  const [show, setShow] = useState(false);
+
   let history = useHistory();
   const { register, handleSubmit } = useForm();
   const [res, setRes] = useState(0);
-  const location = useLocation();
-  console.log("location");
-  console.log(location.state);
-  var data = location.state;
-  console.log("DATAA");
- 
- //console.log(location.state[0].profilePicture);
-  const onSubmit = (data) => {
-    console.log("DATA");
-    console.log(data);
-    //ServiceCustomerAdd(data);
-   //history.push("/CustomerList");
-    if(idUser == null){
-         ServiceCustomerAdd(data);
-         history.push("/CustomerList");
-    }else{
-      console.log(" inside else");
-      ServiceCustomerGetEditinfo(data, idUser);
-      history.push("/CustomerList");
-    }
-  };
 
+  // const onSubmit = (data) => {
+  //   console.log("show" + show);
+  //   setShow(true);
+  //   console.log("show" + show);
+  //   const res = await ServiceCustomerAdd(data);
+  //   console.log("Res");
+  //   console.log(res);
+  //   //history.push("/CustomerList");
+  // };
+
+  async  function onSubmit(data) {
+     console.log("show" + show);
+     setShow(true);
+     console.log("show" + show);
+     const res = await ServiceCustomerAdd(data);
+    //  console.log("Res");
+    //  console.log(res);
+    // if(res==true){
+     //   history.push("/CustomerList");
+     //}
+    
+   };
   function changeDate(event) {
     console.log("date");
     console.log(event.toDate());
@@ -52,41 +54,21 @@ const CustomerForm = () => {
     setRes(response[0]);
   }
 
-
-  // const OnClickEdit = (data) => {
-  //    console.log("data");
-  //    console.log(data);
-  //    console.log("on click on edit");
-  //     // ServiceCustomerGetEditinfo(data, idUser);
-  //  // history.push("/CustomerList");
-  // };
-
-  // function OnClickEdit() {
-    // console.log("data");
-    // //console.log(data);
-    // console.log("on click on edit");
-    // ServiceCustomerGetEditinfo(data, idUser);
-    // history.push("/CustomerList");
-    
-  // }
-
-   const OnClickEdit = (data) => {
+  const OnClickEdit = (data) => {
     console.log("data");
     console.log(data);
     console.log("on click on edit");
     //ServiceCustomerGetEditinfo(data, idUser);
     //history.push("/CustomerList");
-   };
- 
-  useEffect(() => {
-    populateGetCustomerInfo(idUser);
-  }, []);
-  console.log("res");
-  console.log(res.firstName);
- // console.log(res[0].firstName);const [startDate, setStartDate] = useState(new Date());
- const [startDate, setStartDate] = useState(new Date());
+  };
+
+  function OnClickDisplayList() {
+    console.log("Display list clicked");
+    history.push("/CustomerList");
+  }
+
   return (
-    <div style={{ margin: 50 }}>
+    <div style={{ margin: "10%", marginTop: "2%", height: "80%" }}>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <div
           style={{
@@ -98,6 +80,7 @@ const CustomerForm = () => {
         >
           Customer Form
         </div>
+
         <Form.Group controlId="formBasicEmail">
           <Form.Label>{ConstantsCustomerForm.CAPTION_FIRSTNAME}</Form.Label>
           <Form.Control
@@ -108,6 +91,7 @@ const CustomerForm = () => {
             {...register("firstName")}
           />
         </Form.Group>
+
         <Form.Group controlId="formBasicEmail">
           <Form.Label>{ConstantsCustomerForm.CAPTION_LASTNAME}</Form.Label>
           <Form.Control
@@ -163,6 +147,7 @@ const CustomerForm = () => {
                 type={type}
                 id={`inline-${type}-1`}
                 {...register("status")}
+                required={true}
               />
               <Form.Check
                 inline
@@ -172,6 +157,7 @@ const CustomerForm = () => {
                 type={type}
                 id={`inline-${type}-2`}
                 {...register("status")}
+                required={true}
               />
             </div>
           ))}
@@ -184,6 +170,7 @@ const CustomerForm = () => {
             rows={3}
             {...register("bio")}
             defaultValue={res.bio}
+            required={true}
           />
         </Form.Group>
 
@@ -193,13 +180,41 @@ const CustomerForm = () => {
               {ConstantsCustomerForm.CAPTION_PROFILEPICTURE}
             </Form.Label>
             <Form.File
+              required={true}
               id="ProfilePicture"
               label="Upload File here"
               {...register("ProfilePicture")}
             />
           </div>
         </Form.Group>
-        {/* <input id="tdate" type="date" name="todate" onchange="getToDate(event);"></input> */}
+        <div
+          style={{
+            position: "relative",
+            display: "flex",
+            justifyContent: "center",
+            //  minHeight: "200px",
+          }}
+        >
+          <Toast
+            onClose={() => setShow(false)}
+            show={show}
+            delay={5000}
+            autohide
+          >
+            <Toast.Header style={{ color: "green", fontWeight: "bold" }}>
+              <img
+                src="holder.js/20x20?text=%20"
+                className="rounded mr-2"
+                alt=""
+              />
+              <strong className="mr-auto">Success</strong>
+              {/* <small>11 mins ago</small> */}
+            </Toast.Header>
+            <Toast.Body style={{ color: "green", fontWeight: "bold" }}>
+              Customer Details Added Successfully!
+            </Toast.Body>
+          </Toast>
+        </div>
         <div
           style={{
             justifyContent: "space-around",
@@ -213,16 +228,16 @@ const CustomerForm = () => {
             </Button>
           </div>
 
-          {/* <div>
+          <div>
             <Button
               variant="primary"
-             // type="submit"
-              onClick={() =>handleSubmit( OnClickEdit())}
+              // type="submit"
+              onClick={() => OnClickDisplayList()}
               //onClick={OnClickEdit() }
             >
-              {ConstantsCustomerForm.CAPTION_BUTTON_EDIT}
+              {ConstantsCustomerForm.CAPTION_BUTTON_SHOW_CUSTOMERLIST}
             </Button>
-          </div> */}
+          </div>
         </div>
       </Form>
     </div>

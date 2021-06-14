@@ -11,6 +11,7 @@ import './App.css';
 import CustomerForm from '../src/Screens/CustomerForm';
 import CustomerList from '../src/Screens/CustomerList';
 import CustomerShowInfo from '../src/Screens/CustomerShowInfo';
+import CustomerEditForm from '../src/Screens/CustomerEditForm';
 function App() {
   return (
     <Router>
@@ -27,6 +28,9 @@ function App() {
         </Route>
         <Route exact path="/CustomerShowInfo">
           <CustomerShowInfo />
+        </Route>
+        <Route exact path="/CustomerEditForm/:id">
+          <CustomerEditForm />
         </Route>
       </Switch>
     </Router>

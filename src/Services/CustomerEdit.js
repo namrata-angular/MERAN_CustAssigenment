@@ -8,10 +8,6 @@ async function CustomerEdit(data,id) {
   console.log(data.ProfilePicture[0]);
   console.log("Service call edit" + id);
 
-  // const article = {firstName: "React Hooks POST Request Example" };
- //var result = await axios.get(`http://localhost:3000/lists/${id}`);
-  //return result.data;
-
   var fd = new FormData();
   fd.append("firstName", data.firstName);
   fd.append("lastName", data.lastName);

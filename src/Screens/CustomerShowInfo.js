@@ -1,21 +1,35 @@
-import React from 'react';
-import {useLocation} from 'react-router-dom';
-import {Card} from 'react-bootstrap';
-import ConstantCustomerList from '../Constants/CustomerList';
+import React from "react";
+import { useLocation } from "react-router-dom";
+import { Card } from "react-bootstrap";
+import ConstantCustomerList from "../Constants/CustomerList";
 import LogoImg from "../Backend/public/ping/beach.jpg";
-const CustomerShowInfo=(props)=>{
+import { useHistory } from "react-router-dom";
+import { Table, Button } from "react-bootstrap";
+import ConstantsCustomerForm from "../Constants/CustomerForm";
+const CustomerShowInfo = (props) => {
+  const location = useLocation();
+  console.log("location");
+  console.log(location.state);
+  console.log(location.state[0].profilePicture);
+  let history = useHistory();
+  function OnClickDisplayList() {
+    console.log("Display list clicked");
+    history.push("/CustomerList");
+  }
 
-    const location=useLocation();
-    console.log("location");
-    console.log(location.state);
-    console.log(location.state[0].profilePicture);
-
-    const photo =
-      require(`../Backend/public/ping/${location.state[0].profilePicture}`).default;
-    return (
-      <div style={{ display: "flex", justifyContent: "center",margin:40 }}>
-        <Card bg="Info" text={"dark"} style={{height:"60%",width:'60%'}}>
-          <Card.Header style={{fontWeight:'bold'}}>Customer Information</Card.Header>
+   function OnClickDisplayForm() {
+     console.log("Display Form clicked");
+     history.push("/CustomerForm");
+   }
+  const photo =
+    require(`../Backend/public/ping/${location.state[0].profilePicture}`).default;
+  return (
+    <div>
+      <div style={{ display: "flex", justifyContent: "center", margin: 40 }}>
+        <Card bg="Info" text={"dark"} style={{ height: "60%", width: "60%" }}>
+          <Card.Header style={{ fontWeight: "bold" }}>
+            Customer Information
+          </Card.Header>
           <Card.Body>
             <div
               style={{
@@ -39,7 +53,7 @@ const CustomerShowInfo=(props)=>{
                 justifyContent: "center",
                 flexDirection: "column",
                 alignItems: "center",
-                margin:20
+                margin: 20,
               }}
             >
               <Card.Title>
@@ -58,8 +72,18 @@ const CustomerShowInfo=(props)=>{
           </Card.Body>
         </Card>
       </div>
-    );
-}
+      <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+        <Button variant="primary" onClick={() => OnClickDisplayList()}>
+          {ConstantsCustomerForm.CAPTION_BUTTON_SHOW_CUSTOMERLIST}
+        </Button>
 
+        <Button variant="primary" onClick={() => OnClickDisplayForm()}>
+          {ConstantsCustomerForm.CAPTION_BUTTON_SHOW_CUSTOMERFORM}
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+ 
 export default CustomerShowInfo;
-

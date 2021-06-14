@@ -72,6 +72,9 @@ app.get('/lists/:listId',(req,res)=>{
 app.patch("/lists/:listId",(req,res)=>{
     console.log("re");
     console.log(req.body);
+    //var pp = req.files.profilePicture;
+ // pp.mv('public/ping/'+pp.name,function(err){
+  
     List.findOneAndUpdate({'_id': req.params.listId }, {$set: req.body })
       .then((list) => res.send(list))
       .catch((error) => console.log(error));
